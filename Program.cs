@@ -49,6 +49,10 @@ class Program
         }
 
         MostrarCompetidores(competidor, numero);
+        Console.WriteLine("Presiona <enter> para regresar e irnos a la pista");
+        Console.ReadKey();
+        Console.Clear();}
+    
     }
 
     static void Registro(ref string papunombre, ref double papubalance)
