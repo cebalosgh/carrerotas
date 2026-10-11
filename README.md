@@ -1,5 +1,5 @@
 # carrerotas
-las carrerotas de natita y brunote
+las carrerotas de natitata y brunotete
 
 1. FUNCION ANIDADA CARGAR COMPETIDORES PENDIENTE
 2. TITULO EN ARREGLO POR QUE SE VE FEO(tambien por el ego de bruni)
