@@ -35,7 +35,7 @@ class Program
             int.TryParse(Console.ReadLine(), out numcomp);
         } while (numcomp < 2);
 
-        // Los arreglos se crean hasta aquí, cuando ya sabemos cuántos competidores hay
+
         string[] competidor = new string[numcomp];
         int[] numero = new int[numcomp];
 
