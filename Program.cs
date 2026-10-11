@@ -10,14 +10,14 @@ class Program
 
         int numcomp = 0;
         string papunombre = "";
-        double papuapuesta = 0;
+        double papubalance = 0;
         int papuopcion = 0;
 
         Console.WriteLine(paputitulo.PadLeft((Console.WindowWidth + paputitulo.Length) / 2));
         Console.WriteLine(paputitulo1.PadLeft((Console.WindowWidth + paputitulo1.Length) / 2));
         Console.WriteLine(paputitulo2.PadLeft((Console.WindowWidth + paputitulo2.Length) / 2));
 
-        Registro(ref papunombre, ref papuapuesta);
+        Registro(ref papunombre, ref papubalance);
         Console.WriteLine($"¡Hola {papunombre}! ");
 
         do
@@ -51,15 +51,15 @@ class Program
         MostrarCompetidores(competidor, numero);
     }
 
-    static void Registro(ref string papunombre, ref double papuapuesta)
+    static void Registro(ref string papunombre, ref double papubalance)
     {
         Console.WriteLine("¿Cuál es tu nombre?: ");
         papunombre = Console.ReadLine();
         do
         {
-            Console.WriteLine("Ingresa la cantidad de dinero que quieres apostar: ");
-            double.TryParse(Console.ReadLine(), out papuapuesta);
-        } while (papuapuesta <= 0);
+            Console.WriteLine("Ingresa el monto de tu balance: ");
+            double.TryParse(Console.ReadLine(), out papubalance);
+        } while (papubalance <= 0);
     }
 
     static void CargarCompetidoresManualmente(string[] competidor, int[] numero, int numcomp)
