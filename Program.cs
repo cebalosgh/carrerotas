@@ -125,6 +125,6 @@ class Program
         Console.WriteLine("\n===== COMPETIDORES =====");
         for (int i = 0; i < competidor.Length; i++)
         {
-            Console.WriteLine($"#{numero[i]}\t{competidor[i]}");
+            Console.WriteLine($"#{numero[i]} - {competidor[i]}");
         }
     }
