@@ -48,11 +48,23 @@ class Program
             CargarCompetidoresAlt(ref competidor, ref numero);
         }
 
-        MostrarCompetidores(competidor, numero);
-        Console.WriteLine("Presiona <enter> para regresar e irnos a la pista");
-        Console.ReadKey();
-        Console.Clear();}
-    
+    do
+{
+    Console.WriteLine("\n===== MENÚ =====");
+    Console.WriteLine("1. Ver competidores");
+    Console.WriteLine("2. Ir a la pista");
+    Console.WriteLine("3. Salir");
+    int.TryParse(Console.ReadLine(), out papuopcion);
+} while (papuopcion != 1 && papuopcion != 2);
+
+if (papuopcion == 1)
+{
+    VerCompetidores(competidor, numero, papuopcion, numcomp);
+}
+else if (papuopcion == 2)
+{ 
+
+}
     }
 
     static void Registro(ref string papunombre, ref double papubalance)
@@ -128,3 +140,55 @@ class Program
             Console.WriteLine($"#{numero[i]} - {competidor[i]}");
         }
     }
+
+        static void VerCompetidores(string[] competidor, int[] numero, int papuopcion, int numcomp)
+        {
+            Console.WriteLine("\n===== MENÚ COMPETIDORES =====");
+            Console.WriteLine("1. Recargar Lista de competidores");
+            Console.WriteLine("2. Ver lista de competidores");
+            Console.WriteLine("3. Regresar");
+            Console.WriteLine("Elige una opción: ");
+            int.TryParse(Console.ReadLine(), out papuopcion);
+
+            if(papuopcion ==1)
+            {
+                do
+                {
+                    Console.WriteLine("\n===== CARGAR COMPETIDORES =====");
+                    Console.WriteLine("1. Cargar competidores manualmente");
+                    Console.WriteLine("2. Cargar competidores aleatoriamente");
+                    Console.WriteLine("Elige una opción: ");
+                    int.TryParse(Console.ReadLine(), out papuopcion);
+                } while (papuopcion != 1 && papuopcion != 2);
+
+                do
+                {
+                    Console.WriteLine("¿Cuántos competidores van a participar en la carrera? (mínimo 2)");
+                    int.TryParse(Console.ReadLine(), out numcomp);
+                } while (numcomp < 2);
+
+                if (papuopcion == 1)
+                {
+                    CargarCompetidoresManualmente(competidor, numero, numcomp);
+                }
+                else if (papuopcion == 2)
+                {
+                    CargarCompetidoresAlt(ref competidor, ref numero);
+                }
+                else
+                {
+                    Console.WriteLine("Opción no válida");
+                }
+            }
+            else if(papuopcion == 2)
+            {
+                MostrarCompetidores(competidor, numero);
+                Console.WriteLine("Presiona <enter> para regresar");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else if(papuopcion == 3)
+            {
+                VerCompetidores(competidor, numero, papuopcion, numcomp);
+            }
+        }
