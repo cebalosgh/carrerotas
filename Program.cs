@@ -3,216 +3,204 @@ namespace ConsoleApp5;
 class Program
 {
            static void Main(string[] args)
+{
+    string paputitulo = "=================================";
+    string paputitulo1 = "=     CARREROTAS FORMULA 1      =";
+    string paputitulo2 = "=================================";
+
+    int numcomp = 0;
+    string papunombre = "";
+    double papubalance = 0;
+    int papuopcion = 0;
+
+    Console.WriteLine(paputitulo.PadLeft((Console.WindowWidth + paputitulo.Length) / 2));
+    Console.WriteLine(paputitulo1.PadLeft((Console.WindowWidth + paputitulo1.Length) / 2));
+    Console.WriteLine(paputitulo2.PadLeft((Console.WindowWidth + paputitulo2.Length) / 2));
+
+    Registro(ref papunombre, ref papubalance);
+    Console.WriteLine($"¡Hola {papunombre}! ");
+
+    string[] competidor = new string[0];
+    int[] numero = new int[0];
+
+    PapuCargarCompetidores(ref competidor, ref numero, ref numcomp, papuopcion);
+    
+    MenuPrincipal(papuopcion, numcomp, competidor, numero);
+}
+
+static void Registro(ref string papunombre, ref double papubalance)
+{
+    Console.WriteLine("¿Cuál es tu nombre?: ");
+    papunombre = Console.ReadLine();
+    do
+    {
+        Console.WriteLine("Ingresa el monto de tu balance (k): ");
+        double.TryParse(Console.ReadLine(), out papubalance);
+    } while (papubalance <= 0);
+}
+
+static void CargarCompetidoresManualmente(string[] competidor, int[] numero, int numcomp)
+{
+    for (int i = 0; i < numcomp; i++)
+    {
+        Console.WriteLine($"\nIngresa el nombre del competidor {i + 1}:");
+        competidor[i] = Console.ReadLine();
+
+        int numerillo;
+        bool esnumero;
+        do
         {
-            string paputitulo = "=================================";
-            string paputitulo1 = "=     CARREROTAS FORMULA 1      =";
-            string paputitulo2 = "=================================";
+            Console.WriteLine($"Ingresa el número del competidor {i + 1}");
+            esnumero = int.TryParse(Console.ReadLine(), out numero[i]);
+            numerillo = 0;
 
-            int numcomp = 0;
-            string papunombre = "";
-            double papubalance = 0;
-            int papuopcion = 0;
-
-            Console.WriteLine(paputitulo.PadLeft((Console.WindowWidth + paputitulo.Length) / 2));
-            Console.WriteLine(paputitulo1.PadLeft((Console.WindowWidth + paputitulo1.Length) / 2));
-            Console.WriteLine(paputitulo2.PadLeft((Console.WindowWidth + paputitulo2.Length) / 2));
-
-            Registro(ref papunombre, ref papubalance);
-            Console.WriteLine($"¡Hola {papunombre}! ");
-
-            do
+            if (!esnumero || numero[i] <= 0)
             {
-                Console.WriteLine("\n===== CARGAR COMPETIDORES =====");
-                Console.WriteLine("1. Cargar competidores manualmente");
-                Console.WriteLine("2. Cargar competidores aleatoriamente");
-                Console.WriteLine("Elige una opción: ");
-                int.TryParse(Console.ReadLine(), out papuopcion);
-            } while (papuopcion != 1 && papuopcion != 2);
-
-            do
-            {
-                Console.WriteLine("¿Cuántos competidores van a participar en la carrera? (mínimo 2)");
-                int.TryParse(Console.ReadLine(), out numcomp);
-            } while (numcomp < 2);
-
-
-            string[] competidor = new string[numcomp];
-            int[] numero = new int[numcomp];
-
-            if (papuopcion == 1)
-            {
-                CargarCompetidoresManualmente(competidor, numero, numcomp);
+                // Si escribieron letras o algo que no es un número válido
+                esnumero = false;
+                Console.WriteLine("Intenta con numeros mayores a 0 y sin letras, porfavor");
             }
             else
             {
-                CargarCompetidoresAlt(ref competidor, ref numero);
-            }
-
-            
-            MenuPrincipal(papuopcion, numcomp, competidor, numero);
-        }
-
-        static void Registro(ref string papunombre, ref double papubalance)
-        {
-            Console.WriteLine("¿Cuál es tu nombre?: ");
-            papunombre = Console.ReadLine();
-            do
-            {
-                Console.WriteLine("Ingresa el monto de tu balance (k): ");
-                double.TryParse(Console.ReadLine(), out papubalance);
-            } while (papubalance <= 0);
-        }
-
-        static void CargarCompetidoresManualmente(string[] competidor, int[] numero, int numcomp)
-        {
-            for (int i = 0; i < numcomp; i++)
-            {
-                Console.WriteLine($"\nIngresa el nombre del competidor {i + 1}:");
-                competidor[i] = Console.ReadLine();
-
-                int numerillo;
-                bool esnumero;
-                do
+                for (int a = 0; a < i; a++)
                 {
-                    Console.WriteLine($"Ingresa el número del competidor {i + 1}");
-                    esnumero = int.TryParse(Console.ReadLine(), out numero[i]);
-                    numerillo = 0;
-
-                    if (!esnumero || numero[i] <= 0)
+                    if (numero[a] == numero[i])
                     {
-                        // Si escribieron letras o algo que no es un número válido
-                        esnumero = false;
-                        Console.WriteLine("Intenta con numeros mayores a 0 y sin letras, porfavor");
+                        numerillo++;
                     }
-                    else
-                    {
-                        for (int a = 0; a < i; a++)
-                        {
-                            if (numero[a] == numero[i])
-                            {
-                                numerillo++;
-                            }
-                        }
-
-                        if (numerillo > 0)
-                        {
-                            Console.WriteLine("Ese número ya lo tiene otro competidor, elige otro.");
-                        }
-                    }
-                } while (!esnumero || numerillo > 0);
-            }
-        }
-
-        static void CargarCompetidoresAlt(ref string[] competidor, ref int[] numero)
-        {
-            Random CargarCompetidoresAlt = new Random();
-            for (int i = 0; i < competidor.Length; i++)
-            {
-                int nombresillo;
-                do
-                {
-                    char let1 = (char)('A' + CargarCompetidoresAlt.Next(0, 26));
-                    char let2 = (char)('A' + CargarCompetidoresAlt.Next(0, 26));
-                    char let3 = (char)('A' + CargarCompetidoresAlt.Next(0, 26));
-                    competidor[i] = $"{let1}{let2}{let3}";
-                    numero[i] = CargarCompetidoresAlt.Next(1, 100);
-                    nombresillo = 0;
-                    for (int a = 0; a < i; a++)
-                    {
-                        if (numero[a] == numero[i] || competidor[a] == competidor[i])
-                        {
-                            nombresillo++;
-                        }
-                    }
-
-                } while (nombresillo > 0);
-            }
-        }
-
-        static void MostrarCompetidores(string[] competidor, int[] numero)
-        {
-            Console.WriteLine("\n===== COMPETIDORES =====");
-            for (int i = 0; i < competidor.Length; i++)
-            {
-                Console.WriteLine($"#{numero[i]} - {competidor[i]}");
-            }
-        }
-
-        static void MenuPrincipal(int papuopcion, int numcomp, string[] competidor, int[] numero)
-        {
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("\n===== MENÚ =====");
-                Console.WriteLine("1. Ver menú de competidores");
-                Console.WriteLine("2. Ir a la pista");
-                Console.WriteLine("3. Salir");
-                int.TryParse(Console.ReadLine(), out papuopcion);
-            } while (papuopcion != 1 && papuopcion != 2);
-
-            if (papuopcion == 1)
-            {
-                VerCompetidores(competidor, numero, papuopcion, numcomp);
-            }
-            else if (papuopcion == 2)
-            {
-
-            }
-        }
-        static void VerCompetidores(string[] competidor, int[] numero, int papuopcion, int numcomp)
-        {
-            Console.WriteLine("\n===== VER MENÚ DE COMPETIDORES =====");
-            Console.WriteLine("1. Recargar lista de competidores");
-            Console.WriteLine("2. Ver lista de competidores");
-            Console.WriteLine("3. Regresar");
-            Console.WriteLine("Elige una opción: ");
-            int.TryParse(Console.ReadLine(), out papuopcion);
-
-            if (papuopcion == 1)
-            {
-                do
-                {
-                    Console.WriteLine("\n===== CARGAR COMPETIDORES =====");
-                    Console.WriteLine("1. Cargar competidores manualmente");
-                    Console.WriteLine("2. Cargar competidores aleatoriamente");
-                    Console.WriteLine("Elige una opción: ");
-                    int.TryParse(Console.ReadLine(), out papuopcion);
-                } while (papuopcion != 1 && papuopcion != 2);
-
-                do
-                {
-                    Console.WriteLine("¿Cuántos competidores van a participar en la carrera? (mínimo 2)");
-                    int.TryParse(Console.ReadLine(), out numcomp);
-                } while (numcomp < 2);
-
-                if (papuopcion == 1)
-                {
-                    CargarCompetidoresManualmente(competidor, numero, numcomp);
-                    Console.Clear();
-                    VerCompetidores(competidor, numero, papuopcion, numcomp);
                 }
-                else if (papuopcion == 2)
+
+                if (numerillo > 0)
                 {
-                    CargarCompetidoresAlt(ref competidor, ref numero);
-                    Console.Clear();
-                    VerCompetidores(competidor, numero, papuopcion, numcomp);
-                }
-                else
-                {
-                    Console.WriteLine("Opción no válida");
+                    Console.WriteLine("Ese número ya lo tiene otro competidor, elige otro.");
                 }
             }
-            else if (papuopcion == 2)
+        } while (!esnumero || numerillo > 0);
+    }
+}
+
+static void CargarCompetidoresAlt(ref string[] competidor, ref int[] numero)
+{
+    Random CargarCompetidoresAlt = new Random();
+    for (int i = 0; i < competidor.Length; i++)
+    {
+        int nombresillo;
+        do
+        {
+            char let1 = (char)('A' + CargarCompetidoresAlt.Next(0, 26));
+            char let2 = (char)('A' + CargarCompetidoresAlt.Next(0, 26));
+            char let3 = (char)('A' + CargarCompetidoresAlt.Next(0, 26));
+            competidor[i] = $"{let1}{let2}{let3}";
+            numero[i] = CargarCompetidoresAlt.Next(1, 100);
+            nombresillo = 0;
+            for (int a = 0; a < i; a++)
             {
-                MostrarCompetidores(competidor, numero);
-                Console.WriteLine("Presiona <enter> para regresar");
-                Console.ReadKey();
-                Console.Clear();
-                MenuPrincipal(papuopcion, numcomp, competidor, numero);
+                if (numero[a] == numero[i] || competidor[a] == competidor[i])
+                {
+                    nombresillo++;
+                }
             }
-            else if (papuopcion == 3)
-            {
-                VerCompetidores(competidor, numero, papuopcion, numcomp);
-            }
-        }
+
+        } while (nombresillo > 0);
+    }
+}
+
+static void MostrarCompetidores(string[] competidor, int[] numero)
+{
+    Console.WriteLine("\n===== COMPETIDORES =====");
+    for (int i = 0; i < competidor.Length; i++)
+    {
+        Console.WriteLine($"#{numero[i]} - {competidor[i]}");
+    }
+}
+
+static void MenuPrincipal(int papuopcion, int numcomp, string[] competidor, int[] numero)
+{
+    do
+    {
+        Console.Clear();
+        Console.WriteLine("\n===== MENÚ =====");
+        Console.WriteLine("1. Ver menú de competidores");
+        Console.WriteLine("2. Ir a la pista");
+        Console.WriteLine("3. Salir");
+        int.TryParse(Console.ReadLine(), out papuopcion);
+    } while (papuopcion != 1 && papuopcion != 2 && papuopcion !=3);
+
+    if (papuopcion == 1)
+    {
+        VerCompetidores(ref competidor, ref numero, papuopcion, numcomp);
+    }
+    else if (papuopcion == 2)
+    {
+
+    }
+    else if(papuopcion == 3)
+    {
+        Console.WriteLine("¡Gracias por participar en las carrerotas fantásticas F1!");
+    }
+    else 
+    {
+        Console.WriteLine("Opción no válida.");
+        MenuPrincipal(papuopcion, numcomp, competidor, numero);
+    }
+}
+static void VerCompetidores(ref string[] competidor, ref int[] numero, int papuopcion, int numcomp)
+{
+    Console.Clear();
+    Console.WriteLine("\n===== VER MENÚ DE COMPETIDORES =====");
+    Console.WriteLine("1. Recargar lista de competidores");
+    Console.WriteLine("2. Ver lista de competidores");
+    Console.WriteLine("3. Regresar");
+    Console.WriteLine("Elige una opción: ");
+    int.TryParse(Console.ReadLine(), out papuopcion);
+
+    if (papuopcion == 1)
+    {
+        PapuCargarCompetidores(ref competidor, ref numero, ref numcomp, papuopcion);
+        VerCompetidores(ref competidor, ref numero, papuopcion, numcomp);
+    }
+    else if (papuopcion == 2)
+    {
+        MostrarCompetidores(competidor, numero);
+        Console.WriteLine("Presiona <enter> para regresar");
+        Console.ReadKey();
+        Console.Clear();
+        MenuPrincipal(papuopcion, numcomp, competidor, numero);
+    }
+    else if (papuopcion == 3)
+    {
+        VerCompetidores(ref competidor, ref numero, papuopcion, numcomp);
+    }
+}
+
+static void PapuCargarCompetidores(ref string[] competidor, ref int[] numero, ref int numcomp, int papuopcion)
+{
+    do
+    {
+        Console.Clear();
+        Console.WriteLine("\n===== CARGAR COMPETIDORES =====");
+        Console.WriteLine("1. Cargar competidores manualmente");
+        Console.WriteLine("2. Cargar competidores aleatoriamente");
+        Console.WriteLine("Elige una opción: ");
+        int.TryParse(Console.ReadLine(), out papuopcion);
+    } while (papuopcion != 1 && papuopcion != 2);
+
+    do
+    {
+        Console.WriteLine("¿Cuántos competidores van a participar en la carrera? (mínimo 2)");
+        int.TryParse(Console.ReadLine(), out numcomp);
+    } while (numcomp < 2);
+
+    competidor = new string[numcomp];
+    numero = new int[numcomp];
+
+    if (papuopcion == 1)
+    {
+        CargarCompetidoresManualmente(competidor, numero, numcomp);
+    }
+    else
+    {
+        CargarCompetidoresAlt(ref competidor, ref numero);
+    }
+}
 }
