@@ -26,7 +26,7 @@ class Program
 
      PapuCargarCompetidores(ref competidor, ref numero, ref numcomp, papuopcion);
 
-     MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance);
+     MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta);
  }
 
  static void Registro(ref string papunombre, ref double papubalance)
@@ -145,7 +145,7 @@ class Program
      }
  }
 
- static void MenuPrincipal(int papuopcion, int numcomp, string[] competidor, int[] numero, ref double papubalance)
+ static void MenuPrincipal(int papuopcion, int numcomp, string[] competidor, int[] numero, ref double papubalance, ref double papuapuesta)
  {
      do
      {
@@ -160,11 +160,11 @@ class Program
 
      if (papuopcion == 1)
      {
-         VerCompetidores(ref competidor, ref numero, papuopcion, ref numcomp, ref papubalance);
+         VerCompetidores(ref competidor, ref numero, papuopcion, ref numcomp, ref papubalance, ref papuapuesta);
      }
      else if (papuopcion == 2)
      {
-         IrPista(competidor, numero, papuopcion, numcomp, ref papubalance);
+         IrPista(competidor, numero, papuopcion, numcomp, ref papubalance, ref papuapuesta);
      }
      else if (papuopcion == 3)
      {
@@ -177,14 +177,14 @@ class Program
          } while (monto > 0);
 
          Console.WriteLine($"Tu balance es de ${papubalance}k");
-         MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance);
+         MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta);
      }
      else if (papuopcion == 4)
      {
          Console.WriteLine("¡Gracias por participar en las carrerotas fantásticas F1!");
      }
  }
- static void VerCompetidores(ref string[] competidor, ref int[] numero, int papuopcion, ref int numcomp, ref double papubalance)
+ static void VerCompetidores(ref string[] competidor, ref int[] numero, int papuopcion, ref int numcomp, ref double papubalance, ref double papuapuesta)
  {
      Console.Clear();
      Console.WriteLine("\n===== VER MENÚ DE COMPETIDORES =====");
@@ -197,7 +197,7 @@ class Program
      if (papuopcion == 1)
      {
          PapuCargarCompetidores(ref competidor, ref numero, ref numcomp, papuopcion);
-         VerCompetidores(ref competidor, ref numero, papuopcion, ref numcomp, ref papubalance);
+         VerCompetidores(ref competidor, ref numero, papuopcion, ref numcomp, ref papubalance, ref papuapuesta);
      }
      else if (papuopcion == 2)
      {
@@ -205,11 +205,11 @@ class Program
          Console.WriteLine("Presiona <enter> para regresar");
          Console.ReadKey();
          Console.Clear();
-         MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance);
+         MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta);
      }
      else if (papuopcion == 3)
      {
-         VerCompetidores(ref competidor, ref numero, papuopcion, ref numcomp, ref papubalance);
+         VerCompetidores(ref competidor, ref numero, papuopcion, ref numcomp, ref papubalance, ref papuapuesta);
      }
      else
      {
@@ -217,7 +217,7 @@ class Program
      }
  }
 
- static void IrPista(string[] competidor, int[] numero, int papuopcion, int numcomp, ref double papubalance)
+ static void IrPista(string[] competidor, int[] numero, int papuopcion, int numcomp, ref double papubalance, ref double papuapuesta)
  {
      Console.Clear();
      Console.WriteLine("\n===== BIENVENIDO A LA PISTA =====");
@@ -229,15 +229,15 @@ class Program
 
      if (papuopcion == 1)
      {
-         Competir(ref papubalance, papuopcion, numcomp, competidor, numero);
+         Competir(ref papubalance, papuopcion, numcomp, competidor, numero, ref papuapuesta);
      }
      else if (papuopcion == 2)
      {
-         Espectar(ref papubalance, papuopcion, numcomp, competidor, numero);
+         Espectar(ref papubalance, papuopcion, numcomp, competidor, numero, ref papuapuesta);
      }
  }
 
- static void Competir(ref double papubalance, int papuopcion, int numcomp, string[] competidor, int[] numero)
+ static void Competir(ref double papubalance, int papuopcion, int numcomp, string[] competidor, int[] numero, ref double papuapuesta)
  {
      Console.WriteLine("La entrada cuesta $1k. ¿Deseas competir? (si/no)");
      string respuesta = Console.ReadLine().ToLower();
@@ -247,7 +247,7 @@ class Program
          {
              Console.WriteLine("Saldo insuficiente. :(");
              Console.WriteLine("Te invitamos a aumentar el monto de tu balance.");
-             MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance);
+             MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta);
          }
          else
          {
@@ -257,7 +257,7 @@ class Program
      else if (respuesta == "no")
      {
          Console.WriteLine("Te regresaremos al menú cliente inapetente :/");
-         MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance);
+         MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta);
      }
      else
      {
@@ -265,8 +265,9 @@ class Program
          }
  }
 
- static void Espectar(ref double papubalance, int papuopcion, int numcomp, string[] competidor, int[] numero, double papuaspuesta)
+ static void Espectar(ref double papubalance, int papuopcion, int numcomp, string[] competidor, int[] numero, ref double papuapuesta)
  {
+    
      string respuesta = "";
      do
      {
