@@ -1,16 +1,11 @@
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace carrerotas
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            string paputitulo = "=================================";
-            string paputitulo1 = "=     CARREROTAS FORMULA 1      =";
-            string paputitulo2 = "=================================";
-
-            Paputitulo(paputitulo, paputitulo1, paputitulo2);
+            LucesSalida();
+            Paputitulo();
 
             int numcomp = 0;
             string papunombre = "";
@@ -25,14 +20,17 @@ namespace carrerotas
             string[] competidor = new string[0];
             int[] numero = new int[0];
 
-            PapuCargarCompetidores(ref competidor, ref numero, ref numcomp, papuopcion);
+            competidor = PapuCargarCompetidores(ref numero, ref numcomp, papuopcion);
 
             MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta, papunombre);
         }
-
-        static void Paputitulo(string paputitulo, string paputitulo1, string paputitulo2)
+        
+        static void Paputitulo()
         {
-            LucesSalida();
+            string paputitulo = "=================================";
+            string paputitulo1 = "=     CARREROTAS FORMULA 1      =";
+            string paputitulo2 = "=================================";
+
             Console.Clear();
             Console.WriteLine(paputitulo.PadLeft((Console.WindowWidth + paputitulo.Length) / 2));
             Console.WriteLine(paputitulo1.PadLeft((Console.WindowWidth + paputitulo1.Length) / 2));
@@ -44,8 +42,7 @@ namespace carrerotas
 {
     int luces = 5;
     int margen = (Console.WindowWidth - luces * 4) / 2;
-
-
+    
     for (int i = 1; i <= luces; i++)
     {
         Console.Write("\r" + new string(' ', margen));
@@ -87,26 +84,13 @@ namespace carrerotas
                 double.TryParse(Console.ReadLine(), out papubalance);
             } while (papubalance <= 0);
         }
-
-        static void PapuCargarCompetidores(ref string[] competidor, ref int[] numero, ref int numcomp, int papuopcion)
+        
+        static string[] PapuCargarCompetidores(ref int[] numero, ref int numcomp, int papuopcion)
         {
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("\n===== CARGAR COMPETIDORES =====");
-                Console.WriteLine("1. Cargar competidores manualmente");
-                Console.WriteLine("2. Cargar competidores aleatoriamente");
-                Console.WriteLine("Elige una opción: ");
-                int.TryParse(Console.ReadLine(), out papuopcion);
-
-                if(papuopcion!=1 && papuopcion!=2)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Opción no válida, intente otra vez.");
-                    Console.ResetColor();
-                }
-
-            } while (papuopcion != 1 && papuopcion != 2);
+            Paputitulo();
+            Console.WriteLine("\n===== CARGAR COMPETIDORES =====");
+            string[] papuopciones = new string[] { "Cargar competidores manualmente", "Cargar competidores aleatoriamente" };
+            papuopcion = Menu(papuopciones);
 
             do
             {
@@ -114,7 +98,7 @@ namespace carrerotas
                 int.TryParse(Console.ReadLine(), out numcomp);
             } while (numcomp < 2);
 
-            competidor = new string[numcomp];
+            string[] competidor = new string[numcomp];
             numero = new int[numcomp];
 
             if (papuopcion == 1)
@@ -125,6 +109,8 @@ namespace carrerotas
             {
                 CargarCompetidoresAlt(ref competidor, ref numero);
             }
+
+            return competidor;
         }
         static void CargarCompetidoresManualmente(string[] competidor, int[] numero, int numcomp)
         {
@@ -143,9 +129,8 @@ namespace carrerotas
 
                     if (!esnumero || numero[i] <= 0)
                     {
-                        // Si escribieron letras o algo que no es un número válido
                         esnumero = false;
-                        Console.WriteLine("Intenta con numeros mayores a 0 y sin letras, porfavor");
+                        Print("Intenta con numeros mayores a 0 y sin letras, porfavor", 'r');
                     }
                     else
                     {
@@ -159,7 +144,7 @@ namespace carrerotas
 
                         if (numerillo > 0)
                         {
-                            Console.WriteLine("Ese número ya lo tiene otro competidor, elige otro.");
+                            Print("Ese número ya lo tiene otro competidor, elige otro.", 'r');
                         }
                     }
                 } while (!esnumero || numerillo > 0);
@@ -203,24 +188,10 @@ namespace carrerotas
 
         static void MenuPrincipal(int papuopcion, int numcomp, string[] competidor, int[] numero, ref double papubalance, ref double papuapuesta, string papunombre)
         {
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("\n===== MENÚ =====");
-                Console.WriteLine("1. Ver menú de competidores");
-                Console.WriteLine("2. Ir a la pista");
-                Console.WriteLine("3. Agregar balance");
-                Console.WriteLine("4. Salir");
-                int.TryParse(Console.ReadLine(), out papuopcion);
-
-                if (papuopcion != 1 && papuopcion != 2 && papuopcion != 3 && papuopcion != 4)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Opción no válida, intente otra vez.");
-                    Console.ResetColor();
-                }
-
-            } while (papuopcion != 1 && papuopcion != 2 && papuopcion != 3 && papuopcion != 4);
+            Paputitulo();
+            Console.WriteLine("\n===== MENÚ =====");
+            string[] papuopciones = new string[] { "Ver menú de competidores", "Ir a la pista", "Agregar balance", "Salir" };
+            papuopcion = Menu(papuopciones);
 
             if (papuopcion == 1)
             {
@@ -252,27 +223,14 @@ namespace carrerotas
         }
         static void VerCompetidores(ref string[] competidor, ref int[] numero, int papuopcion, ref int numcomp, ref double papubalance, ref double papuapuesta, string papunombre)
         {
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("\n===== VER MENÚ DE COMPETIDORES =====");
-                Console.WriteLine("1. Recargar lista de competidores");
-                Console.WriteLine("2. Ver lista de competidores");
-                Console.WriteLine("3. Regresar");
-                Console.WriteLine("Elige una opción: ");
-                int.TryParse(Console.ReadLine(), out papuopcion);
-
-                if (papuopcion != 1 && papuopcion != 2 && papuopcion != 3)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Opción no válida, intente otra vez.");
-                    Console.ResetColor();
-                }
-            } while (papuopcion != 1 && papuopcion != 2 && papuopcion != 3);
+            Paputitulo();
+            Console.WriteLine("\n===== VER MENÚ DE COMPETIDORES =====");
+            string[] papuopciones = new string[] { "Recargar lista de competidores", "Ver lista de competidores", "Regresar" };
+            papuopcion = Menu(papuopciones);
 
             if (papuopcion == 1)
             {
-                PapuCargarCompetidores(ref competidor, ref numero, ref numcomp, papuopcion);
+                competidor = PapuCargarCompetidores(ref numero, ref numcomp, papuopcion);
                 VerCompetidores(ref competidor, ref numero, papuopcion, ref numcomp, ref papubalance, ref papuapuesta, papunombre);
             }
             else if (papuopcion == 2)
@@ -280,7 +238,6 @@ namespace carrerotas
                 MostrarCompetidores(competidor, numero);
                 Console.WriteLine("Presiona <enter> para regresar");
                 Console.ReadKey();
-                Console.Clear();
                 MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta, papunombre);
             }
             else if (papuopcion == 3)
@@ -291,23 +248,10 @@ namespace carrerotas
 
         static void IrPista(string[] competidor, int[] numero, int papuopcion, int numcomp, ref double papubalance, ref double papuapuesta, string papunombre)
         {
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("\n===== BIENVENIDO A LA PISTA =====");
-                Console.WriteLine("1. Competir");
-                Console.WriteLine("2. Espectar");
-                Console.WriteLine("3. Regresar");
-                Console.WriteLine("Elige una opción: ");
-                int.TryParse(Console.ReadLine(), out papuopcion);
-
-                if (papuopcion != 1 && papuopcion != 2 && papuopcion != 3)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Opción no válida, intente otra vez.");
-                    Console.ResetColor();
-                }
-            } while (papuopcion != 1 && papuopcion != 2 && papuopcion != 3);
+            Paputitulo();
+            Console.WriteLine("\n===== BIENVENIDO A LA PISTA =====");
+            string[] papuopciones = new string[] { "Competir", "Espectar", "Regresar" };
+            papuopcion = Menu(papuopciones);
 
             if (papuopcion == 1)
             {
@@ -331,7 +275,7 @@ namespace carrerotas
             {
                 if (papubalance < 1)
                 {
-                    Console.WriteLine("Saldo insuficiente. :(");
+                    Print("Saldo insuficiente. :(", 'r');
                     Console.WriteLine("Te invitamos a aumentar el monto de tu balance.");
                     Console.ReadKey();
                     MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta, papunombre);
@@ -350,6 +294,7 @@ namespace carrerotas
             }
             else
             {
+                Print("Opción no válida, escribe si o no.", 'r');
                 Competir(ref papubalance, papuopcion, numcomp, competidor, numero, ref papuapuesta, papunombre);
             }
         }
@@ -369,7 +314,7 @@ namespace carrerotas
 
                 if (papubalance <= 0)
                 {
-                    Console.WriteLine("No tienes saldo para apostar :( pero puedes ver la carrera");
+                    Print("No tienes saldo para apostar :( pero puedes ver la carrera", 'r');
                     Console.WriteLine("Presiona <enter> para continuar");
                     Console.ReadKey();
                     SimularCarrera(competidor, numero, papuopcion, numcomp, ref papubalance, ref papuapuesta, papunombre, false, false, 0, 0);
@@ -415,11 +360,10 @@ namespace carrerotas
 
                             if (papuapuesta <= 0 || papuapuesta > papubalance)
                             {
-                                Console.WriteLine("Apuesta no válida, tiene que ser mayor a 0 y no pasarte de tu balance");
+                                Print("Apuesta no válida, tiene que ser mayor a 0 y no pasarte de tu balance", 'r');
                             }
                         } while (papuapuesta <= 0 || papuapuesta > papubalance);
-
-                        // NUEVO: posición en la que debe llegar tu competidor
+                        
                         int papuposicion = 0;
                         string respuestilla = "";
                         do
@@ -436,8 +380,7 @@ namespace carrerotas
                                 respuestilla = Console.ReadLine().ToLower();
                             } while (respuestilla != "si" && respuestilla != "no");
                         } while (respuestilla == "no");
-
-                        // NUEVO: se descuenta lo apostado y arranca la carrera
+                        
                         papubalance -= papuapuesta;
                         SimularCarrera(competidor, numero, papuopcion, numcomp, ref papubalance, ref papuapuesta, papunombre, false, true, numapuesta, papuposicion);
                     }
@@ -453,7 +396,7 @@ namespace carrerotas
             }
             if (encontrado == false)
             {
-                Console.WriteLine("El número por el que quieres apostar no existe.\n");
+                Print("El número por el que quieres apostar no existe.\n", 'r');
                 Apostar(ref papubalance, papuopcion, numcomp, competidor, numero, ref papuapuesta, papunombre);
             }
         }
@@ -488,6 +431,9 @@ namespace carrerotas
             int meta = 50;
             int siguientelugar = 1;
             int terminadillos = 0;
+            
+            Console.Clear();
+            LucesSalida();
 
             do
             {
@@ -514,8 +460,7 @@ namespace carrerotas
                     }
                 }
 
-                Console.Clear();
-                LucesSalida();
+                Paputitulo();
                 Console.WriteLine("\n===== SIMULANDO PAPUCARRERA =====");
                 for (int i = 0; i < totalcorredores; i++)
                 {
@@ -553,15 +498,15 @@ namespace carrerotas
                 int milugar = lugar[totalcorredores - 1];
                 if (milugar == -1)
                 {
-                    Console.WriteLine("\nTuviste DNF, no ganaste nada :(");
+                    Print("\nTuviste DNF, no ganaste nada :(", 'r');
                 }
                 else
                 {
                     double premio = totalcorredores * 1000;
                     premio = premio / (milugar * 2);
                     papubalance += premio / 1000;
-                    Console.WriteLine($"\n¡Has terminado {milugar}!");
-                    Console.WriteLine($"Ganaste ${premio} que se sumarán a tu cuenta");
+                    Print($"\n¡Has terminado {milugar}!", 'v');
+                    Print($"Ganaste ${premio} que se sumarán a tu cuenta", 'v');
                 }
             }
 
@@ -573,22 +518,22 @@ namespace carrerotas
                     {
                         if (lugar[i] == -1)
                         {
-                            Console.WriteLine($"\nEl competidor {corredor[i]} tuvo DNF");
+                            Print($"\nEl competidor {corredor[i]} tuvo DNF", 'r');
                         }
                         else
                         {
-                            Console.WriteLine($"\nEl competidor {corredor[i]} terminó {lugar[i]}º");
+                            Print($"\nEl competidor {corredor[i]} terminó {lugar[i]}º", 'a');
                         }
 
                         if (lugar[i] == papuposicion)
                         {
                             double ganancia = ((papuapuesta * 2) / numcomp) + papuapuesta;
                             papubalance += ganancia;
-                            Console.WriteLine($"¡Le atinaste! Ganaste ${ganancia}k");
+                            Print($"¡Le atinaste! Ganaste ${ganancia}k", 'v');
                         }
                         else
                         {
-                            Console.WriteLine($"Perdiste tu apuesta de ${papuapuesta}k :(");
+                            Print($"Perdiste tu apuesta de ${papuapuesta}k :(", 'r');
                         }
                     }
                 }
@@ -600,8 +545,46 @@ namespace carrerotas
             Console.ReadKey();
             MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta, papunombre);
         }
+        
+        static void Print(string msg, char color)
+        {
+            if (color == 'r')
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+            else if (color == 'v')
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+            }
+            else if (color == 'a')
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+            Console.WriteLine(msg);
+            Console.ResetColor();
+        }
+        
+        static int Menu(string[] opciones)
+        {
+            int papuopcion = 0;
+            bool esnumero;
+            do
+            {
+                for (int i = 0; i < opciones.Length; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {opciones[i]}");
+                }
+                Console.WriteLine("Elige una opción: ");
+                esnumero = int.TryParse(Console.ReadLine(), out papuopcion);
+
+                if (!esnumero || papuopcion < 1 || papuopcion > opciones.Length)
+                {
+                    Print("Opción no válida, intente otra vez.", 'r');
+                }
+            } while (!esnumero || papuopcion < 1 || papuopcion > opciones.Length);
+
+            return papuopcion;
+        }
     }
 }
-
-
 
