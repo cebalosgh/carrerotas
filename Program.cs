@@ -3,6 +3,7 @@ namespace carrerotas
     internal class Program
     {
         static void Main(string[] args)
+
         {
             LucesSalida();
             Paputitulo();
@@ -15,7 +16,8 @@ namespace carrerotas
 
             Registro(ref papunombre, ref papubalance);
 
-            Console.WriteLine($"¡Hola {papunombre}! ");
+            Console.WriteLine($"¡Hola {papunombre}! Estás listo para las carrerotas?");
+            Thread.Sleep(1500);
 
             string[] competidor = new string[0];
             int[] numero = new int[0];
@@ -24,7 +26,7 @@ namespace carrerotas
 
             MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta, papunombre);
         }
-        
+
         static void Paputitulo()
         {
             string paputitulo = "=================================";
@@ -42,7 +44,7 @@ namespace carrerotas
 {
     int luces = 5;
     int margen = (Console.WindowWidth - luces * 4) / 2;
-    
+
     for (int i = 1; i <= luces; i++)
     {
         Console.Write("\r" + new string(' ', margen));
@@ -62,7 +64,7 @@ namespace carrerotas
         Thread.Sleep(900);
     }
 
-    Thread.Sleep(1200); 
+    Thread.Sleep(1200);
 
     Console.Write("\r" + new string(' ', margen));
     Console.ForegroundColor = ConsoleColor.Green;
@@ -70,6 +72,7 @@ namespace carrerotas
     {
         Console.Write("(O) ");
     }
+    Thread.Sleep(700);
 
     Console.ResetColor();
     Console.WriteLine();
@@ -84,7 +87,7 @@ namespace carrerotas
                 double.TryParse(Console.ReadLine(), out papubalance);
             } while (papubalance <= 0);
         }
-        
+
         static string[] PapuCargarCompetidores(ref int[] numero, ref int numcomp, int papuopcion)
         {
             Paputitulo();
@@ -269,7 +272,7 @@ namespace carrerotas
 
         static void Competir(ref double papubalance, int papuopcion, int numcomp, string[] competidor, int[] numero, ref double papuapuesta, string papunombre)
         {
-            Console.WriteLine("La entrada cuesta $1k. ¿Deseas competir? (si/no)");
+            Print("La entrada cuesta $1k. ¿Deseas competir? (si/no)", color:'a');
             string respuesta = Console.ReadLine().ToLower();
             if (respuesta == "si")
             {
@@ -288,7 +291,7 @@ namespace carrerotas
             }
             else if (respuesta == "no")
             {
-                Console.WriteLine("Te regresaremos al menú cliente inapetente :/");
+                Print("Te regresaremos al menú cliente inapetente :/", color:'a');
                 Console.ReadKey();
                 MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta, papunombre);
             }
@@ -363,7 +366,7 @@ namespace carrerotas
                                 Print("Apuesta no válida, tiene que ser mayor a 0 y no pasarte de tu balance", 'r');
                             }
                         } while (papuapuesta <= 0 || papuapuesta > papubalance);
-                        
+
                         int papuposicion = 0;
                         string respuestilla = "";
                         do
@@ -380,13 +383,13 @@ namespace carrerotas
                                 respuestilla = Console.ReadLine().ToLower();
                             } while (respuestilla != "si" && respuestilla != "no");
                         } while (respuestilla == "no");
-                        
+
                         papubalance -= papuapuesta;
                         SimularCarrera(competidor, numero, papuopcion, numcomp, ref papubalance, ref papuapuesta, papunombre, false, true, numapuesta, papuposicion);
                     }
                     else if (respuesta == "no")
                     {
-                        Console.WriteLine("No seas tibio, continúa apostando :/");
+                        Print("No seas tibio, continúa apostando :/", color:'a');
                         Apostar(ref papubalance, papuopcion, numcomp, competidor, numero, ref papuapuesta, papunombre);
                     }
 
@@ -431,7 +434,7 @@ namespace carrerotas
             int meta = 50;
             int siguientelugar = 1;
             int terminadillos = 0;
-            
+
             Console.Clear();
             LucesSalida();
 
@@ -506,7 +509,7 @@ namespace carrerotas
                     premio = premio / (milugar * 2);
                     papubalance += premio / 1000;
                     Print($"\n¡Has terminado {milugar}!", 'v');
-                    Print($"Ganaste ${premio} que se sumarán a tu cuenta", 'v');
+                    Print($"Ganaste ${premio:F2} que se sumarán a tu cuenta", 'v');
                 }
             }
 
@@ -529,23 +532,23 @@ namespace carrerotas
                         {
                             double ganancia = ((papuapuesta * 2) / numcomp) + papuapuesta;
                             papubalance += ganancia;
-                            Print($"¡Le atinaste! Ganaste ${ganancia}k", 'v');
+                            Print($"¡Le atinaste! Ganaste ${ganancia:F2}k", 'v');
                         }
                         else
                         {
-                            Print($"Perdiste tu apuesta de ${papuapuesta}k :(", 'r');
+                            Print($"Perdiste tu apuesta de ${papuapuesta:F2}k :(", 'r');
                         }
                     }
                 }
                 papuapuesta = 0;
             }
 
-            Console.WriteLine($"Tu balance es de ${papubalance}k");
+            Console.WriteLine($"Tu balance es de ${papubalance:F2}k");
             Console.WriteLine("Presiona <enter> para regresar al menú");
             Console.ReadKey();
             MenuPrincipal(papuopcion, numcomp, competidor, numero, ref papubalance, ref papuapuesta, papunombre);
         }
-        
+
         static void Print(string msg, char color)
         {
             if (color == 'r')
@@ -563,7 +566,7 @@ namespace carrerotas
             Console.WriteLine(msg);
             Console.ResetColor();
         }
-        
+
         static int Menu(string[] opciones)
         {
             int papuopcion = 0;
@@ -587,4 +590,3 @@ namespace carrerotas
         }
     }
 }
-
