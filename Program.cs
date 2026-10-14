@@ -41,32 +41,42 @@ namespace carrerotas
         }
 
         static void LucesSalida()
+{
+    int luces = 5;
+    int margen = (Console.WindowWidth - luces * 4) / 2;
+
+    // Se prenden en rojo una por una
+    for (int i = 1; i <= luces; i++)
+    {
+        Console.Write("\r" + new string(' ', margen));
+        for (int j = 0; j < luces; j++)
         {
-            int luces = 5;
-            int margen = (Console.WindowWidth - luces * 4) / 2;
-
-            // Se prenden en rojo una por una
-            for (int i = 1; i <= luces; i++)
+            if (j < i)
             {
-                Console.Write("\r" + new string(' ', margen));
-                for (int j = 0; j < luces; j++)
-                {
-                    Console.ForegroundColor = j < i ? ConsoleColor.Red : ConsoleColor.DarkGray;
-                    Console.Write("(O) ");
-                }
-                Thread.Sleep(900);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("(O) ");
             }
-
-            Thread.Sleep(1200); 
-
-            Console.Write("\r" + new string(' ', margen));
-            Console.ForegroundColor = ConsoleColor.Green;
-            for (int j = 0; j < luces; j++) Console.Write("(O) ");
-            Thread.Sleep(700);
-
-            Console.ResetColor();
-            Console.WriteLine();
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("(O) ");
+            }
         }
+        Thread.Sleep(900);
+    }
+
+    Thread.Sleep(1200); 
+
+    Console.Write("\r" + new string(' ', margen));
+    Console.ForegroundColor = ConsoleColor.Green;
+    for (int j = 0; j < luces; j++)
+    {
+        Console.Write("(O) ");
+    }
+
+    Console.ResetColor();
+    Console.WriteLine();
+}
         static void Registro(ref string papunombre, ref double papubalance)
         {
             Console.WriteLine("¿Cuál es tu nombre? ");
