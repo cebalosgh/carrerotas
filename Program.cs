@@ -45,7 +45,7 @@ namespace carrerotas
     int luces = 5;
     int margen = (Console.WindowWidth - luces * 4) / 2;
 
-    // Se prenden en rojo una por una
+
     for (int i = 1; i <= luces; i++)
     {
         Console.Write("\r" + new string(' ', margen));
